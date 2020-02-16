@@ -28,3 +28,32 @@
       <h3 style="margin:20px;">Average Score <span class="badge badge-primary">{{average_score}}</span></h3>
       <a href="" class="btn btn-success btn-rounded btn-block" data-toggle="modal"
         data-target="#{{single_project.id}}">Vote</a>
+        <!-- Modal -->
+        <div class="modal fade bd-example-modal-md" id="{{single_project.id}}" tabindex="-1" role="dialog" aria-labelledby="projectTitle" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title text-center" id="projectTitle">Rate Project</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <form class="{% url 'project_review' single_project.pk %}" action="" method="post" enctype="multipart/form-data">
+                  {% csrf_token %}
+                  {% bootstrap_form vote_form%}
+
+                  <div class="form-group">
+                    <input type="submit" class="btn mx-auto" value="Submit Vote">
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+    </div>
+
+  </div>
+  <!-- Card -->
+</div>
+{% endblock %}
