@@ -24,7 +24,7 @@ This application that allows a user to post their projects they have created and
 ## Setup Instructions
 
 Use the folllowing commands for the project to be in use.
-* git clone https://github.com/Alex20-c/Awards
+* git clone https://github.com/Alex20-c/Awards.
 * install `python 3.6`
 * Install [Postgresql](https://www.postgresql.org/download/)
 * cd AWARDS
