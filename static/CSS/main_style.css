@@ -1,0 +1,20 @@
+.heading {
+    font-family: 'Special Elite', cursive;
+    font-size: 35px;
+    margin: 15px;
+}
+
+.btn {
+    border-radius: 30px;
+    float: right;
+}
+
+.logo img {
+    object-fit: cover;
+    width: 300px;
+    height: 10px;
+}
+
+.card {
+    max-height: 900px;
+}
