@@ -67,3 +67,56 @@ def profile(request):
         return redirect('new_profile')
 
     return render(request,'profile/profile.html',{'profile':prof,'projects':projects})
+def search_project(request):
+    if 'project' in request.GET and request.GET ["project"]:
+        search_term = request.GET.get("project")
+        searched_projects = Project.search_project_by_title(search_term)
+        message = f'{search_term}'
+
+        return render(request, 'search/search.html', {"message":message, "projects":searched_projects})
+
+    else:
+        message = "No search results yet!"
+        return render (request, 'search/search.html', {"message": message})
+@login_required(login_url='/accounts/login/')
+def project_review(request,project_id):
+    try:
+        single_project = Project.get_single_project(project_id)
+        average_score = round(((single_project.design + single_project.usability + single_project.content)/3),2)
+        if request.method == 'POST':
+            vote_form = VoteForm(request.POST)
+            if vote_form.is_valid():
+                single_project.vote_submissions+=1
+                if single_project.design == 0:
+                    single_project.design = int(request.POST['design'])
+                else:
+                    single_project.design = (single_project.design + int(request.POST['design']))/2
+                if single_project.usability == 0:
+                    single_project.usability = int(request.POST['usability'])
+                else:
+                    single_project.usability = (single_project.usability + int(request.POST['usability']))/2
+                if single_project.content == 0:
+                    single_project.content = int(request.POST['content'])
+                else:
+                    single_project.content = (single_project.content + int(request.POST['usability']))/2
+
+                single_project.save()
+                return redirect('project_review',project_id)
+        else:
+            vote_form = VoteForm()
+
+    except Exception as  e:
+        raise Http404()
+    return render(request,'Awards/project_review.html',{"vote_form":vote_form,"single_project":single_project,"average_score":average_score})
+
+class ProfileList(APIView):
+    def get(self,request,format=None):
+        complete_profile = Profile.objects.all()
+        serializers = ProfileSerializer(complete_profile, many=True)
+        return Response(serializers.data)
+
+class ProjectList(APIView):
+    def get(self,request,format=None):
+        projects = Project.objects.all()
+        serializers = ProjectSerializer(projects, many=True)
+        return Response(serializers.data)
